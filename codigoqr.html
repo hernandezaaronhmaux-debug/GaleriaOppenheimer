@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tarjeta QR Oppenheimer - Galería Histórica</title>
+    <style>
+        /* --- CONFIGURACIÓN DE PÁGINA PARA IMPRESIÓN --- */
+        @page {
+            size: A4;
+            margin: 0;
+            background-color: #1a1e24; /* Fondo del lienzo general */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #1a1e24;
+            font-family: 'Times New Roman', Times, serif; /* Tipografía clásica elegante para emular la era */
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+        }
+
+        /* --- CONTENEDOR CENTRAL DE LA TARJETA (Centrado absoluto en el A4) --- */
+        .card-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -75mm; /* Mitad de la altura (150mm / 2) */
+            margin-left: -50mm; /* Mitad del ancho (100mm / 2) */
+            width: 100mm;
+            height: 150mm;
+            background-color: #050709;
+            border: 3px solid #dfb743;
+            border-radius: 8mm;
+            padding: 12mm 8mm;
+            text-align: center;
+            overflow: hidden;
+            box-shadow: 0 5mm 15mm rgba(0,0,0,0.6);
+        }
+
+        /* Textura técnica de fondo (Cuadrícula fina) */
+        .card-background {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                linear-gradient(rgba(212, 175, 55, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 175, 55, 0.04) 1px, transparent 1px);
+            background-size: 5mm 5mm;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Contenido interno ordenado jerárquicamente */
+        .card-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: table;
+            width: 100%;
+        }
+
+        .section-top {
+            display: table-row;
+            height: 25mm;
+        }
+
+        .section-middle {
+            display: table-row;
+            height: 70mm;
+        }
+
+        .section-bottom {
+            display: table-row;
+            height: 31mm;
+        }
+
+        /* --- TEXTOS --- */
+        .title {
+            font-family: 'Arial', sans-serif;
+            font-size: 20pt;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 2mm;
+        }
+
+        .subtitle {
+            font-family: 'Arial', sans-serif;
+            font-size: 8pt;
+            color: #dfb743;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        /* --- ÁREA DEL QR Y ÓRBITAS --- */
+        .qr-zone {
+            position: relative;
+            width: 60mm;
+            height: 60mm;
+            margin: 5mm auto;
+        }
+
+        .orbit {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 1px dashed rgba(212, 175, 55, 0.25);
+            border-radius: 50%;
+        }
+        
+        .o1 { transform: scale(1.15) rotate(45deg); }
+        .o2 { transform: scale(1.15) rotate(-45deg); }
+
+        .qr-box {
+            position: absolute;
+            top: 5mm; left: 5mm;
+            width: 50mm;
+            height: 50mm;
+            background-color: #ffffff;
+            border: 2mm solid #dfb743;
+            border-radius: 4mm;
+            padding: 3mm;
+        }
+
+        /* QR generado mediante API pública con parámetros incrustados directos */
+        .qr-image {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- PIE DE TARJETA --- */
+        .cta-text {
+            font-family: 'Arial', sans-serif;
+            font-size: 9.5pt;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+        }
+
+        .cta-text strong {
+            color: #f36a22;
+            font-weight: bold;
+        }
+
+        .url-text {
+            font-family: 'Arial', sans-serif;
+            font-size: 7.5pt;
+            color: #8e9a9f;
+            letter-spacing: 2px;
+            margin-top: 5mm;
+            padding-top: 3mm;
+            border-top: 1px solid rgba(142, 154, 159, 0.2);
+            display: block;
+            text-transform: uppercase;
+        }
+
+        /* Líneas de corte decorativas para guiar la guillotina física */
+        .crop-line {
+            position: absolute;
+            width: 10mm;
+            height: 10mm;
+            border-color: rgba(212, 175, 55, 0.4);
+            border-style: solid;
+            pointer-events: none;
+        }
+        .tl { top: 45%; left: 45%; margin-top: -78mm; margin-left: -53mm; border-width: 1px 0 0 1px; }
+        .tr { top: 45%; left: 55%; margin-top: -78mm; margin-left: 43mm; border-width: 1px 1px 0 0; }
+        .bl { top: 55%; left: 45%; margin-top: 68mm; margin-left: -53mm; border-width: 0 0 1px 1px; }
+        .br { top: 55%; left: 55%; margin-top: 68mm; margin-left: 43mm; border-width: 0 1px 1px 0; }
+    </style>
+</head>
+<body>
+
+    <!-- Guías de corte opcionales para la imprenta -->
+    <div class="crop-line tl"></div>
+    <div class="crop-line tr"></div>
+    <div class="crop-line bl"></div>
+    <div class="crop-line br"></div>
+
+    <!-- TARJETA FÍSICA -->
+    <div class="card-wrapper">
+        <div class="card-background"></div>
+        
+        <div class="card-content">
+            <!-- PARTE SUPERIOR -->
+            <div class="section-top">
+                <h1 class="title">Oppenheimer</h1>
+                <p class="subtitle">Galería Histórica</p>
+            </div>
+
+            <!-- PARTE CENTRAL (CÓDIGO QR) -->
+            <div class="section-middle">
+                <div class="qr-zone">
+                    <div class="orbit o1"></div>
+                    <div class="orbit o2"></div>
+                    <div class="qr-box">
+                        <!-- El QR apunta temporalmente a un enlace genérico de vercel; se actualizará con tu URL -->
+                        <img class="qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://vercel.com&color=050709" alt="QR Code">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PARTE INFERIOR (CTA) -->
+            <div class="section-bottom">
+                <p class="cta-text">Escanea para activar la<br><strong>experiencia interactiva</strong></p>
+                <span class="url-text">proyecto-manhattan.vercel.app</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
